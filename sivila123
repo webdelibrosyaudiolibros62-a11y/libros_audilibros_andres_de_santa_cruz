@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Digital | U.E. Andrés de Santa Cruz</title>
+    <style> /*Aquí van los estilos CSS */ </style>
+</head>
+<body>
+    <header>
+        <img class="logo" alt="Escudo de la unidad educativa" src="logo_ue_asc.png">
+        <div class="brand">
+            <h1>Unidad Educativa Andrés de Santa Cruz</h1>
+            <p>Portal informativo - Biblioteca digital educativa</p>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#catalogo">Catálogo digital</a>
+        <a href="#acerca">Acerca del portal</a>
+    </nav>
+
+    <section class="hero" id="inicio">
+        <h2>Explora, descubre y aprende</h2>
+        <p>Encuentra libros para tus tareas y descubre recursos educativos.</p>
+        <input id="busqueda" type="search" placeholder="Buscar libro, autor o categoría...">
+        <button id="limpiar">Mostrar todos</button>
+    </section>
+
+    <main>
+        <h2 id="catalogo">Catálogo de libros</h2>
+        <div class="catalogo" id="libros">
+            <!-- Aquí se colocan las tarjetas de libros -->
+            <article class="book" data-search="el principito aventura literatura">
+                <div class="cover cover-1"><strong>El principito</strong></div>
+                <div>
+                    <h3>El principito</h3>
+                    <p>Autor: Antoine de Saint-Exupéry</p>
+                    <button class="btn info"
+                        data-title="El principito"
+                        data-author="Antoine de Saint-Exupéry"
+                        data-desc="Historia sobre amistad e imaginación.">Ver información</button>
+                </div>
+            </article>
+        </div>
+
+        <section class="hero" id="acerca">
+            <h2>Un espacio para aprender</h2>
+            <script>
+const search = document.getElementById('busqueda');
+const cards = [...document.querySelectorAll('.book')];
+const empty = document.getElementById('sinResultados');
+
+function filterBooks() {
+    let q = search.value.trim().toLocaleLowerCase('es');
+    let n = 0;
+
+    cards.forEach(c => {
+        let ok = c.dataset.search.includes(q);
+        c.style.display = ok ? 'flex' : 'none';
+        if (ok) n++;
+    });
+
+    if (empty) empty.style.display = n ? 'none' : 'block';
+}
+
+search.addEventListener('input', filterBooks);
+
+document.getElementById('limpiar').addEventListener('click', () => {
+    search.value = '';
+    filterBooks();
+    search.focus();
+});
+
+const modal = document.getElementById('modal');
+
+document.querySelectorAll('.info').forEach(b => {
+    b.addEventListener('click', () => {
+        document.getElementById('modalTitle').textContent = b.dataset.title;
+        document.getElementById('modalAuthor').textContent = 'Autor: ' + b.dataset.author;
+        document.getElementById('modalDesc').textContent = b.dataset.desc;
+        modal.classList.add('show');
+    });
+});
+
+function closeModal() {
+    modal.classList.remove('show');
+}
+
+document.getElementById('cerrar').addEventListener('click', closeModal);
+
+modal.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+});
+</script>
